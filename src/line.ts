@@ -1,20 +1,30 @@
-import { stroke } from './basic'
+import { defaultWidth, stroke } from './canvas'
+import { CanvasContext } from './types'
 
-function line(
-  ctx: CanvasRenderingContext2D,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  color: string,
-  width = 3
-): void {
+type Line = {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+  color?: string
+  width?: number
+  dashed?: boolean
+}
+
+function line(ctx: CanvasContext, { x1, y1, x2, y2, width, dashed, color }: Line): void {
   ctx.save()
   ctx.beginPath()
-  ctx.lineWidth = width
+  if (dashed) {
+    ctx.setLineDash([5, 5])
+  }
+  ctx.lineWidth = width ?? defaultWidth
+
   ctx.moveTo(x1, y1)
   ctx.lineTo(x2, y2)
-  stroke(ctx, color)
+
+  if (color) {
+    stroke(ctx, color)
+  }
   ctx.restore()
 }
 

@@ -1,5 +1,24 @@
 html,
 body {
   margin: 0;
-  background-color: black;
+}
+
+header {
+  text-align: center;
+}
+
+#canvas-container {
+  display: flex;
+  background-color: aquamarine;
+}
+
+#canvas {
+  flex-grow: 1;
+}
+
+body > * {
+  border: 2px solid black;
+  border-radius: 4px;
+  margin: 2px;
+  padding: 2px;
 }

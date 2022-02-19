@@ -1,4 +1,3 @@
-import { initCanvas } from './init'
+import { demo } from './demo'
 
-console.log('Initializing Demo...')
-window.addEventListener('load', initCanvas)
+window.addEventListener('load', demo)

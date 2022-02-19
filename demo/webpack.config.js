@@ -1,9 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.ts',
+  entry: ['./src/index.ts', './main.css'],
   devtool: 'inline-source-map',
   devServer: {
     static: './dist-demo',
@@ -11,10 +12,10 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '...'], // ... -> resolves default webpack extension
     alias: {
-      CanvasMK: path.resolve(__dirname, '../src'),
+      Canvas: path.resolve(__dirname, '../src'),
     },
   },
-  plugins: [new HtmlWebpackPlugin({ template: 'index.html' })],
+  plugins: [new HtmlWebpackPlugin({ template: 'index.html' }), new MiniCssExtractPlugin()],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -25,6 +26,10 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },

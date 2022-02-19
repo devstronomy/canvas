@@ -3,7 +3,6 @@
     "baseUrl": ".",
     "declaration": true,
     "esModuleInterop": true,
-    "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
     "module": "es6",
     "noFallthroughCasesInSwitch": true,
@@ -13,7 +12,7 @@
     "noUnusedParameters": true,
     "paths": {
       "*": ["*", "../src/*"],
-      "CanvasMK/*": ["../src/*"]
+      "Canvas/*": ["../src/*"]
     },
     "skipLibCheck": true,
     "strict": true,
