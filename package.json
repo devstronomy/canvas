@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Canvas Drawing Library",
   "license": "MIT",
-  "author": "",
+  "author": "Martin Krauskopf <martin.krauskopf@gmail.com> (https://devstronomy.com/)",
   "files": [
     "dist"
   ],
