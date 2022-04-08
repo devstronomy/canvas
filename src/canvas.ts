@@ -3,7 +3,9 @@ import type { CanvasContext, CanvasInfo } from './types'
 
 const defaultWidth: number = 1
 
-function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): void {
+type CanvasHandler = { redraw: () => void }
+
+function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): CanvasHandler {
   const canvas = document.getElementById(canvasElementId) as HTMLCanvasElement
   const canvasContainer = checkDefined(
     canvas.parentElement,
@@ -45,7 +47,9 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
   })
   resizeObserver.observe(canvasContainer)
 
-  drawFunction(canvasInfo)
+  return {
+    redraw: () => drawFunction(canvasInfo),
+  }
 }
 
 function clear({ ctx, width, height }: CanvasInfo): void {
