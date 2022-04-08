@@ -6,9 +6,6 @@ module.exports = {
   mode: 'development',
   entry: ['./src/index.ts', './main.css'],
   devtool: 'inline-source-map',
-  devServer: {
-    static: './dist-demo',
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '...'], // ... -> resolves default webpack extension
     alias: {
