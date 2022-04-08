@@ -1,17 +1,16 @@
-import { initializeCanvas } from 'Canvas/index'
+import { CanvasInfo, fillCanvas, initializeCanvas } from 'Canvas/index'
 
 import { ellipseDemo } from './ellipseDemo'
 import { lineDemo } from './lineDemo'
 
+function drawScene(c: CanvasInfo): void {
+  fillCanvas(c, 'black);')
+  lineDemo(c)
+  ellipseDemo(c)
+}
+
 function demo() {
-  const canvasInfo = initializeCanvas('canvas')
-  const { ctx, canvas } = canvasInfo
-
-  ctx.fillStyle = 'black'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-  lineDemo(canvasInfo)
-  ellipseDemo(canvasInfo)
+  initializeCanvas('canvas', drawScene)
 }
 
 export { demo }

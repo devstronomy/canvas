@@ -3,14 +3,19 @@ import type { CanvasContext, CanvasInfo } from './types'
 
 const defaultWidth: number = 1
 
-function initializeCanvas(canvasElementId: string): CanvasInfo {
+function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): void {
   const canvas = document.getElementById(canvasElementId) as HTMLCanvasElement
+  const canvasContainer = checkDefined(
+    canvas.parentElement,
+    'canvas (id=' + canvasElementId + ') must have parent element'
+  )
+
   const ctx = checkDefined(canvas.getContext('2d'), 'canvas context')
 
-  const adjustCanvas = (canvasInfo: CanvasInfo) => {
+  const adjustCanvas = (canvasInfo: CanvasInfo): CanvasInfo => {
     // Lookup the size the browser is displaying the canvas.
-    const displayWidth = canvas.clientWidth
-    const displayHeight = canvas.clientHeight
+    const displayWidth = canvasContainer.clientWidth
+    const displayHeight = canvasContainer.clientHeight
 
     // Check if the canvas is not the same size and possibly adjust.
     if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
@@ -31,9 +36,16 @@ function initializeCanvas(canvasElementId: string): CanvasInfo {
     width: 0,
     height: 0,
   }
+
   adjustCanvas(canvasInfo)
 
-  return canvasInfo
+  const resizeObserver = new ResizeObserver((_entries) => {
+    canvasInfo = adjustCanvas(canvasInfo)
+    drawFunction(canvasInfo)
+  })
+  resizeObserver.observe(canvasContainer)
+
+  drawFunction(canvasInfo)
 }
 
 function clear({ ctx, width, height }: CanvasInfo): void {
@@ -54,9 +66,14 @@ function fill(ctx: CanvasContext, color: string): void {
   ctx.fill()
 }
 
+function fillCanvas({ ctx, canvas }: CanvasInfo, color: string): void {
+  ctx.fillStyle = color
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+}
+
 function fillRGB(ctx: CanvasContext, r: string, g: string, b: string): void {
   ctx.fillStyle = `rgb(${r}, ${g}, ${b})`
   ctx.fill()
 }
 
-export { initializeCanvas, defaultWidth, clear, fill, fillRGB, stroke }
+export { initializeCanvas, defaultWidth, clear, fill, fillRGB, fillCanvas, stroke }
