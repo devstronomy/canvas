@@ -5,7 +5,7 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "start": "webpack serve --open",
+    "start": "webpack serve",
     "test": "jest",
     "prettier": "prettier -c src && prettier-package-json -l ./package.json",
     "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"
