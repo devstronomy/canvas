@@ -6,6 +6,9 @@ type CanvasInfo = Readonly<{
   ctx: CanvasContext
   width: number
   height: number
+  redraw: () => void
+  startLoop: () => void
+  stopLoop: () => void
 }>
 
 type Color = Readonly<{

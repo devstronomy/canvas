@@ -3,9 +3,7 @@ import type { CanvasContext, CanvasInfo } from './types'
 
 const defaultWidth: number = 1
 
-type CanvasHandler = { redraw: () => void }
-
-function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): CanvasHandler {
+function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): CanvasInfo {
   const canvas = document.getElementById(canvasElementId) as HTMLCanvasElement
   const canvasContainer = checkDefined(
     canvas.parentElement,
@@ -32,11 +30,34 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
     return canvasInfo
   }
 
+  let animationHandle: number | undefined
+
+  function startLoop() {
+    console.log('%cMK: startLoop()', 'font-weight: bold')
+    // prepare canvas
+    canvasInfo = adjustCanvas(canvasInfo)
+    drawFunction(canvasInfo)
+    animationHandle = requestAnimationFrame(startLoop)
+  }
+
+  function stopLoop() {
+    console.log('%cMK: stopLoop()', 'font-weight: bold')
+    if (animationHandle !== undefined) {
+      cancelAnimationFrame(animationHandle!)
+      animationHandle = undefined
+    } else {
+      console.log('Animation is not running.')
+    }
+  }
+
   let canvasInfo: CanvasInfo = {
     canvas,
     ctx,
     width: 0,
     height: 0,
+    redraw: () => drawFunction(canvasInfo),
+    startLoop,
+    stopLoop,
   }
 
   adjustCanvas(canvasInfo)
@@ -47,9 +68,7 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
   })
   resizeObserver.observe(canvasContainer)
 
-  return {
-    redraw: () => drawFunction(canvasInfo),
-  }
+  return canvasInfo
 }
 
 function clear({ ctx, width, height }: CanvasInfo): void {
