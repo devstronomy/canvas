@@ -11,15 +11,15 @@ enum Scene {
 
 let scene: Scene = Scene.StaticDemo
 
-function drawScene(c: CanvasInfo): void {
-  fillCanvas(c, 'black);')
+function drawScene(ci: CanvasInfo): void {
+  fillCanvas(ci, 'black);')
   switch (scene) {
     case Scene.StaticDemo:
-      lineDemo(c)
-      ellipseDemo(c)
+      lineDemo(ci)
+      ellipseDemo(ci)
       break
     case Scene.AnimationDemo:
-      animationDemo(c)
+      animationDemo(ci)
       break
     default:
       console.error('Unknown demo')
@@ -30,14 +30,18 @@ function demo() {
   const canvas = initializeCanvas('canvas', drawScene)
 
   document.getElementById('static-demo')?.addEventListener('click', () => {
-    scene = Scene.StaticDemo
-    canvas.stopLoop()
-    canvas.redraw()
+    if (scene !== Scene.StaticDemo) {
+      scene = Scene.StaticDemo
+      canvas.stopLoop()
+      canvas.redraw()
+    }
   })
 
   document.getElementById('animation-demo')?.addEventListener('click', () => {
-    scene = Scene.AnimationDemo
-    canvas.startLoop()
+    if (scene !== Scene.AnimationDemo) {
+      scene = Scene.AnimationDemo
+      canvas.startLoop()
+    }
   })
 }
 

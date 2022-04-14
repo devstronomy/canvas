@@ -11,10 +11,12 @@ type CanvasInfo = Readonly<{
   stopLoop: () => void
 }>
 
+type DrawFunction = (ci: CanvasInfo) => void
+
 type Color = Readonly<{
   r: string
   g: string
   b: string
 }>
 
-export type { Canvas, CanvasContext, CanvasInfo, Color }
+export type { Canvas, CanvasContext, CanvasInfo, Color, DrawFunction }

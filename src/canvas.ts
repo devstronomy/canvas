@@ -1,13 +1,19 @@
 import { checkDefined } from './preconditions'
-import type { CanvasContext, CanvasInfo } from './types'
+import type { CanvasContext, CanvasInfo, DrawFunction } from './types'
 
 const defaultWidth: number = 1
 
-function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): CanvasInfo {
-  const canvas = document.getElementById(canvasElementId) as HTMLCanvasElement
+function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
+  let loop: boolean = false
+
+  const canvas =
+    typeof canvasElementOrId === 'string'
+      ? (document.getElementById(canvasElementOrId) as HTMLCanvasElement)
+      : canvasElementOrId
+
   const canvasContainer = checkDefined(
     canvas.parentElement,
-    'canvas (id=' + canvasElementId + ') must have parent element'
+    'canvas (id=' + canvasElementOrId + ') must have parent element'
   )
 
   const ctx = checkDefined(canvas.getContext('2d'), 'canvas context')
@@ -30,24 +36,38 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
     return canvasInfo
   }
 
-  let animationHandle: number | undefined
+  let animationHandle: number
+  function doLoop(counter: number) {
+    console.log(`%cMK: doLoop(${counter})`, 'font-weight: bold')
+    drawFunction(canvasInfo)
+    if (loop) {
+      animationHandle = requestAnimationFrame(() => doLoop(counter))
+    }
+  }
 
+  let loopCounter = 0
   function startLoop() {
     console.log('%cMK: startLoop()', 'font-weight: bold')
-    // prepare canvas
-    canvasInfo = adjustCanvas(canvasInfo)
-    drawFunction(canvasInfo)
-    animationHandle = requestAnimationFrame(startLoop)
+    if (loop) {
+      console.warn('Attempt to start the loop, but the loop is already running.')
+    } else {
+      loop = true
+      loopCounter += 1
+      doLoop(loopCounter)
+    }
   }
 
   function stopLoop() {
     console.log('%cMK: stopLoop()', 'font-weight: bold')
-    if (animationHandle !== undefined) {
-      cancelAnimationFrame(animationHandle!)
-      animationHandle = undefined
-    } else {
-      console.log('Animation is not running.')
+    if (!loop) {
+      console.warn('Attempt to stop the loop, but no loop is not running.')
     }
+    if (animationHandle == null) {
+      console.warn('Attempt to stop the loop, with undefined animationHandle.')
+    } else {
+      cancelAnimationFrame(animationHandle)
+    }
+    loop = false
   }
 
   let canvasInfo: CanvasInfo = {
@@ -60,8 +80,7 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
     stopLoop,
   }
 
-  adjustCanvas(canvasInfo)
-
+  canvasInfo = adjustCanvas(canvasInfo)
   const resizeObserver = new ResizeObserver((_entries) => {
     canvasInfo = adjustCanvas(canvasInfo)
     drawFunction(canvasInfo)
