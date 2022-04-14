@@ -38,7 +38,6 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
 
   let animationHandle: number
   function doLoop(counter: number) {
-    console.log(`%cMK: doLoop(${counter})`, 'font-weight: bold')
     drawFunction(canvasInfo)
     if (loop) {
       animationHandle = requestAnimationFrame(() => doLoop(counter))
@@ -47,7 +46,6 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
 
   let loopCounter = 0
   function startLoop() {
-    console.log('%cMK: startLoop()', 'font-weight: bold')
     if (loop) {
       console.warn('Attempt to start the loop, but the loop is already running.')
     } else {
@@ -58,7 +56,6 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   function stopLoop() {
-    console.log('%cMK: stopLoop()', 'font-weight: bold')
     if (!loop) {
       console.warn('Attempt to stop the loop, but no loop is not running.')
     }
