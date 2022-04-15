@@ -8,10 +8,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
     "clean": "rimraf dist",
-    "clean:build": "run-s clean build",
+    "clean:dist": "run-s clean dist",
     "demo": "npm run -C demo start",
+    "dist": "tsc",
     "test": "jest",
     "prettier": "prettier -c src && prettier-package-json -l ./package.json",
     "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"

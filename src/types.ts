@@ -1,7 +1,7 @@
 type Canvas = HTMLCanvasElement
 type CanvasContext = CanvasRenderingContext2D
 
-type CanvasInfo = Readonly<{
+type CanvasInfo = {
   canvas: Canvas
   ctx: CanvasContext
   width: number
@@ -9,7 +9,8 @@ type CanvasInfo = Readonly<{
   redraw: () => void
   startLoop: () => void
   stopLoop: () => void
-}>
+  destroy: () => void
+}
 
 type DrawFunction = (ci: CanvasInfo) => void
 

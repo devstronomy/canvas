@@ -75,6 +75,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     redraw: () => drawFunction(canvasInfo),
     startLoop,
     stopLoop,
+    destroy: () => {},
   }
 
   canvasInfo = adjustCanvas(canvasInfo)
@@ -83,6 +84,9 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     drawFunction(canvasInfo)
   })
   resizeObserver.observe(canvasContainer)
+  canvasInfo.destroy = () => {
+    resizeObserver.unobserve(canvasContainer)
+  }
 
   return canvasInfo
 }
