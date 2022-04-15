@@ -37,21 +37,19 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   let animationHandle: number
-  function doLoop(counter: number) {
+  function doLoop() {
     drawFunction(canvasInfo)
     if (loop) {
-      animationHandle = requestAnimationFrame(() => doLoop(counter))
+      animationHandle = requestAnimationFrame(() => doLoop())
     }
   }
 
-  let loopCounter = 0
   function startLoop() {
     if (loop) {
       console.warn('Attempt to start the loop, but the loop is already running.')
     } else {
       loop = true
-      loopCounter += 1
-      doLoop(loopCounter)
+      doLoop()
     }
   }
 
