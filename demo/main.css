@@ -1,7 +1,7 @@
 html,
 body {
   margin: 0;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   background-color: rgba(0, 0, 0, 0.464);
 
   display: flex;
@@ -21,7 +21,32 @@ body > * {
 }
 
 header {
-  text-align: center;
+  display: flex;
+  gap: 0.3em;
+  padding: 0.4em 0.8em;
+}
+
+header div:last-child {
+  flex-grow: 1;
+  text-align: right;
+}
+
+nav ul {
+  display: flex;
+  gap: 0.8em;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  color: hsl(220, 80%, 80%);
+}
+
+nav ul li {
+  cursor: pointer;
+}
+
+nav ul li:hover {
+  color: hsl(220, 80%, 70%);
+  cursor: pointer;
 }
 
 main {
@@ -33,7 +58,7 @@ main {
   flex-grow: 1;
 
   /* TODO: Hack. I did not find a better way. There were always miscellaneous layout issues. */
-  max-height: calc(100vh - 43px);
+  max-height: calc(100vh - 52px);
 
   overflow: hidden;
   background-color: hsl(0, 80%, 60%);

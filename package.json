@@ -1,6 +1,6 @@
 {
   "name": "@devstronomy/canvas",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Canvas Drawing Library",
   "license": "MIT",
   "author": "Martin Krauskopf <martin.krauskopf@gmail.com> (https://devstronomy.com/)",
@@ -8,10 +8,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
     "clean": "rimraf dist",
-    "clean:build": "run-s clean build",
+    "clean:dist": "run-s clean dist",
     "demo": "npm run -C demo start",
+    "dist": "tsc",
     "test": "jest",
     "prettier": "prettier -c src && prettier-package-json -l ./package.json",
     "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"

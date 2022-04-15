@@ -1,13 +1,19 @@
 import { checkDefined } from './preconditions'
-import type { CanvasContext, CanvasInfo } from './types'
+import type { CanvasContext, CanvasInfo, DrawFunction } from './types'
 
 const defaultWidth: number = 1
 
-function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo) => void): void {
-  const canvas = document.getElementById(canvasElementId) as HTMLCanvasElement
+function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
+  let loop: boolean = false
+
+  const canvas =
+    typeof canvasElementOrId === 'string'
+      ? (document.getElementById(canvasElementOrId) as HTMLCanvasElement)
+      : canvasElementOrId
+
   const canvasContainer = checkDefined(
     canvas.parentElement,
-    'canvas (id=' + canvasElementId + ') must have parent element'
+    'canvas (id=' + canvasElementOrId + ') must have parent element'
   )
 
   const ctx = checkDefined(canvas.getContext('2d'), 'canvas context')
@@ -30,22 +36,57 @@ function initializeCanvas(canvasElementId: string, drawFunction: (ci: CanvasInfo
     return canvasInfo
   }
 
+  let animationHandle: number
+  function doLoop() {
+    drawFunction(canvasInfo)
+    if (loop) {
+      animationHandle = requestAnimationFrame(() => doLoop())
+    }
+  }
+
+  function startLoop() {
+    if (loop) {
+      console.warn('Attempt to start the loop, but the loop is already running.')
+    } else {
+      loop = true
+      doLoop()
+    }
+  }
+
+  function stopLoop() {
+    if (!loop) {
+      console.warn('Attempt to stop the loop, but no loop is not running.')
+    }
+    if (animationHandle == null) {
+      console.warn('Attempt to stop the loop, with undefined animationHandle.')
+    } else {
+      cancelAnimationFrame(animationHandle)
+    }
+    loop = false
+  }
+
   let canvasInfo: CanvasInfo = {
     canvas,
     ctx,
     width: 0,
     height: 0,
+    redraw: () => drawFunction(canvasInfo),
+    startLoop,
+    stopLoop,
+    destroy: () => {},
   }
 
-  adjustCanvas(canvasInfo)
-
+  canvasInfo = adjustCanvas(canvasInfo)
   const resizeObserver = new ResizeObserver((_entries) => {
     canvasInfo = adjustCanvas(canvasInfo)
     drawFunction(canvasInfo)
   })
   resizeObserver.observe(canvasContainer)
+  canvasInfo.destroy = () => {
+    resizeObserver.unobserve(canvasContainer)
+  }
 
-  drawFunction(canvasInfo)
+  return canvasInfo
 }
 
 function clear({ ctx, width, height }: CanvasInfo): void {
