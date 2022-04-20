@@ -12,7 +12,7 @@ enum Scene {
 let scene: Scene = Scene.StaticDemo
 
 function drawScene(ci: CanvasInfo): void {
-  fillCanvas(ci, 'black);')
+  fillCanvas(ci, 'black')
   switch (scene) {
     case Scene.StaticDemo:
       lineDemo(ci)
