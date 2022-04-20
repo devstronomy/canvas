@@ -61,5 +61,5 @@ main {
   max-height: calc(100vh - 52px);
 
   overflow: hidden;
-  background-color: hsl(0, 80%, 60%);
+  background-color: black;
 }
