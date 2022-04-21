@@ -1,3 +1,4 @@
+import drawDebugBox from './debugBox'
 import { checkDefined } from './preconditions'
 import type { CanvasContext, CanvasInfo, DrawFunction } from './types'
 
@@ -36,9 +37,14 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     return canvasInfo
   }
 
+  function drawCanvas(canvasInfo: CanvasInfo) {
+    drawFunction(canvasInfo)
+    drawDebugBox(canvasInfo)
+  }
+
   let animationHandle: number
   function doLoop() {
-    drawFunction(canvasInfo)
+    drawCanvas(canvasInfo)
     if (loop) {
       animationHandle = requestAnimationFrame(() => doLoop())
     }
@@ -70,7 +76,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     ctx,
     width: 0,
     height: 0,
-    redraw: () => drawFunction(canvasInfo),
+    redraw: () => drawCanvas(canvasInfo),
     startLoop,
     stopLoop,
     destroy: () => {},
@@ -79,7 +85,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   canvasInfo = adjustCanvas(canvasInfo)
   const resizeObserver = new ResizeObserver((_entries) => {
     canvasInfo = adjustCanvas(canvasInfo)
-    drawFunction(canvasInfo)
+    drawCanvas(canvasInfo)
   })
   resizeObserver.observe(canvasContainer)
   canvasInfo.destroy = () => {
