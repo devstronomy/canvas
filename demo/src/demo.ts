@@ -27,20 +27,21 @@ function drawScene(ci: CanvasInfo): void {
 }
 
 function demo() {
-  const canvas = initializeCanvas('canvas', drawScene)
+  const ci = initializeCanvas('canvas', drawScene)
+  ci.showDebugBox()
 
   document.getElementById('static-demo')?.addEventListener('click', () => {
     if (scene !== Scene.StaticDemo) {
       scene = Scene.StaticDemo
-      canvas.stopLoop()
-      canvas.redraw()
+      ci.stopLoop()
+      ci.redraw()
     }
   })
 
   document.getElementById('animation-demo')?.addEventListener('click', () => {
     if (scene !== Scene.AnimationDemo) {
       scene = Scene.AnimationDemo
-      canvas.startLoop()
+      ci.startLoop()
     }
   })
 }

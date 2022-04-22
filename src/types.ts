@@ -10,6 +10,9 @@ type CanvasInfo = {
   startLoop: () => void
   stopLoop: () => void
   destroy: () => void
+
+  showDebugBox: () => void
+  hideDebugBox: () => void
 }
 
 type DrawFunction = (ci: CanvasInfo) => void
