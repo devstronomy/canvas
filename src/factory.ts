@@ -46,6 +46,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   function drawCanvas(ci: CanvasInfo) {
     drawFunction(ci)
     if (state.debugBoxVisible) {
+      ci.ctx.setTransform(1, 0, 0, 1, 0, 0)
       drawDebugBox(ci, state.loop)
     }
   }
@@ -80,7 +81,8 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   function changeZoomLevel(delta: number) {
-    ci.zoomLevel += delta
+    ci.zoomLevel += delta / 1000
+    ci.zoomLevel = Math.min(4, Math.max(1 / 5, ci.zoomLevel))
     if (!state.loop) {
       ci.redraw()
     }
@@ -91,7 +93,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     ctx,
     width: 0,
     height: 0,
-    zoomLevel: 0,
+    zoomLevel: 1,
     redraw: () => drawCanvas(ci),
     startLoop,
     stopLoop,

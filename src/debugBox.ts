@@ -6,7 +6,7 @@ function drawDebugBox({ ctx, width, height, zoomLevel }: CanvasInfo, loop: boole
   const lines = [
     `Width    ${width}`,
     `Height   ${height}`,
-    `Zoom     ${zoomLevel}`,
+    `Zoom     ${zoomLevel.toFixed(2)}`,
     `Looping  ${loop}`,
   ]
 

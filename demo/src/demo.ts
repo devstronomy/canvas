@@ -13,6 +13,11 @@ let scene: Scene = Scene.StaticDemo
 
 function drawScene(ci: CanvasInfo): void {
   fillCanvas(ci, 'black')
+  ci.ctx.setTransform(1, 0, 0, 1, 1, 1)
+  ci.ctx.translate(ci.width / 2, ci.height / 2)
+  ci.ctx.scale(ci.zoomLevel, ci.zoomLevel)
+  ci.ctx.translate(-ci.width / 2, -ci.height / 2)
+
   switch (scene) {
     case Scene.StaticDemo:
       lineDemo(ci)
