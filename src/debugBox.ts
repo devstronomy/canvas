@@ -27,8 +27,8 @@ function drawDebugBox({ ctx, width, height }: CanvasInfo) {
   const textLineX = boxX + 6
   stroke(ctx, '#0d0')
   ctx.font = `normal normal ${fontSize}px Monospace`
-  ctx.strokeText(`Width  ${width}`, textLineX, textLineY(1))
-  ctx.strokeText(`Height ${height}`, textLineX, textLineY(2))
+  ctx.strokeText(`Width  ${width}`, textLineX, textLineY(1), boxWidth - 12)
+  ctx.strokeText(`Height ${height}`, textLineX, textLineY(2), boxWidth - 12)
 
   ctx.restore()
 }
