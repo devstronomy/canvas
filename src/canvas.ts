@@ -6,6 +6,7 @@ const defaultWidth: number = 1
 
 function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
   let loop: boolean = false
+  let debugBoxVisible: boolean = false
 
   const canvas =
     typeof canvasElementOrId === 'string'
@@ -19,7 +20,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
 
   const ctx = checkDefined(canvas.getContext('2d'), 'canvas context')
 
-  const adjustCanvas = (canvasInfo: CanvasInfo): CanvasInfo => {
+  const adjustCanvas = (ci: CanvasInfo): CanvasInfo => {
     // Lookup the size the browser is displaying the canvas.
     const displayWidth = canvasContainer.clientWidth
     const displayHeight = canvasContainer.clientHeight
@@ -29,22 +30,24 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
       canvas.width = displayWidth
       canvas.height = displayHeight
       return {
-        ...canvasInfo,
+        ...ci,
         width: displayWidth,
         height: displayHeight,
       }
     }
-    return canvasInfo
+    return ci
   }
 
-  function drawCanvas(canvasInfo: CanvasInfo) {
-    drawFunction(canvasInfo)
-    drawDebugBox(canvasInfo)
+  function drawCanvas(ci: CanvasInfo) {
+    drawFunction(ci)
+    if (debugBoxVisible) {
+      drawDebugBox(ci)
+    }
   }
 
   let animationHandle: number
   function doLoop() {
-    drawCanvas(canvasInfo)
+    drawCanvas(ci)
     if (loop) {
       animationHandle = requestAnimationFrame(() => doLoop())
     }
@@ -71,28 +74,34 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     loop = false
   }
 
-  let canvasInfo: CanvasInfo = {
+  let ci: CanvasInfo = {
     canvas,
     ctx,
     width: 0,
     height: 0,
-    redraw: () => drawCanvas(canvasInfo),
+    redraw: () => drawCanvas(ci),
     startLoop,
     stopLoop,
     destroy: () => {},
+    showDebugBox: () => {
+      debugBoxVisible = true
+    },
+    hideDebugBox: () => {
+      debugBoxVisible = false
+    },
   }
 
-  canvasInfo = adjustCanvas(canvasInfo)
+  ci = adjustCanvas(ci)
   const resizeObserver = new ResizeObserver((_entries) => {
-    canvasInfo = adjustCanvas(canvasInfo)
-    drawCanvas(canvasInfo)
+    ci = adjustCanvas(ci)
+    drawCanvas(ci)
   })
   resizeObserver.observe(canvasContainer)
-  canvasInfo.destroy = () => {
+  ci.destroy = () => {
     resizeObserver.unobserve(canvasContainer)
   }
 
-  return canvasInfo
+  return ci
 }
 
 function clear({ ctx, width, height }: CanvasInfo): void {
