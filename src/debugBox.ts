@@ -1,20 +1,34 @@
 import { stroke } from './canvas'
 import { CanvasInfo } from './types'
 
-function drawDebugBox({ ctx, width }: CanvasInfo) {
-  console.log('%cMK: drawDebugBox()', 'font-weight: bold')
-  ctx.save()
-  ctx.beginPath()
-  const boxWidth = 200
-  const boxHeight = 200
+function drawDebugBox({ ctx, width, height }: CanvasInfo) {
+  const nOfLines = 2
+  const fontSize = 12
+  const boxWidth = 100
+  const boxHeight = (nOfLines + 1) * fontSize
+  const boxX = width - boxWidth - 10
+  const boxY = 10
 
+  ctx.save()
+
+  // rectangle
+  ctx.beginPath()
   ctx.globalAlpha = 0.65
   ctx.fillStyle = 'black'
-  ctx.fillRect(width - boxWidth - 10, 10, boxWidth, boxHeight)
-
+  ctx.fillRect(boxX, 10, boxWidth, boxHeight)
+  // rectangle border
   ctx.globalAlpha = 1
-  ctx.rect(width - boxWidth - 10, 10, boxWidth, boxHeight)
-  stroke(ctx, 'gray')
+  ctx.rect(boxX, 10, boxWidth, boxHeight)
+  stroke(ctx, '#ddd')
+
+  // text information
+  ctx.beginPath()
+  const textLineY = (n: number) => boxY + n * (fontSize + 2)
+  const textLineX = boxX + 6
+  stroke(ctx, '#0d0')
+  ctx.font = `normal normal ${fontSize}px Monospace`
+  ctx.strokeText(`Width  ${width}`, textLineX, textLineY(1))
+  ctx.strokeText(`Height ${height}`, textLineX, textLineY(2))
 
   ctx.restore()
 }
