@@ -8,7 +8,16 @@ type InternalState = {
   debugBoxVisible: boolean
 }
 
-function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
+type Options = Readonly<{
+  zoomMin?: number
+  zoomMax?: number
+}>
+
+function initializeCanvas(
+  canvasElementOrId: string | HTMLCanvasElement,
+  drawFunction: DrawFunction,
+  options?: Options
+): CanvasInfo {
   const state: InternalState = {
     loop: false,
     debugBoxVisible: false,
@@ -50,7 +59,7 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     ci.ctx.fillRect(0, 0, ci.canvas.width, ci.canvas.height)
     ci.ctx.setTransform(1, 0, 0, 1, 1, 1)
     ci.ctx.translate(ci.width / 2, ci.height / 2)
-    ci.ctx.scale(ci.zoomLevel, ci.zoomLevel)
+    ci.ctx.scale(ci.zoom.level, ci.zoom.level)
     ci.ctx.translate(-ci.width / 2, -ci.height / 2)
 
     drawFunction(ci)
@@ -90,8 +99,8 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   function changeZoomLevel(delta: number) {
-    ci.zoomLevel += delta / 1000
-    ci.zoomLevel = Math.min(4, Math.max(1 / 5, ci.zoomLevel))
+    ci.zoom.level += delta / 1000
+    ci.zoom.level = Math.min(ci.zoom.max, Math.max(ci.zoom.min, ci.zoom.level))
     if (!state.loop) {
       ci.redraw()
     }
@@ -102,13 +111,18 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     ctx,
     width: 0,
     height: 0,
-    zoomLevel: 1,
+
+    zoom: {
+      level: 1,
+      min: options?.zoomMin ?? 0.2,
+      max: options?.zoomMax ?? 4,
+    },
+    changeZoomLevel,
+
     redraw: () => drawCanvas(ci),
     startLoop,
     stopLoop,
     destroy: () => {},
-
-    changeZoomLevel,
 
     showDebugBox: () => {
       state.debugBoxVisible = true

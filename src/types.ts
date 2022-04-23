@@ -6,7 +6,13 @@ type CanvasInfo = {
   ctx: CanvasContext
   width: number
   height: number
-  zoomLevel: number
+
+  zoom: {
+    level: number
+    min: number
+    max: number
+  }
+
   redraw: () => void
   startLoop: () => void
   stopLoop: () => void
