@@ -1,3 +1,4 @@
+import { fillCanvas } from './canvas'
 import drawDebugBox from './debugBox'
 import { checkDefined } from './preconditions'
 import type { CanvasInfo, DrawFunction } from './types'
@@ -44,6 +45,14 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   function drawCanvas(ci: CanvasInfo) {
+    // prepare canvas
+    fillCanvas(ci, 'black')
+    ci.ctx.fillRect(0, 0, ci.canvas.width, ci.canvas.height)
+    ci.ctx.setTransform(1, 0, 0, 1, 1, 1)
+    ci.ctx.translate(ci.width / 2, ci.height / 2)
+    ci.ctx.scale(ci.zoomLevel, ci.zoomLevel)
+    ci.ctx.translate(-ci.width / 2, -ci.height / 2)
+
     drawFunction(ci)
     if (state.debugBoxVisible) {
       ci.ctx.setTransform(1, 0, 0, 1, 0, 0)
