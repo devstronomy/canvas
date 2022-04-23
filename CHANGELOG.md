@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.1] - 2022-04-23
+
+- API for setting zoom boundaries.
+
 ## [0.3.0] - 2022-04-23
 
 - Started to track this CHANGELOG.

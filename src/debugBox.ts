@@ -1,12 +1,12 @@
 import { stroke } from './canvas'
 import { CanvasInfo } from './types'
 
-function drawDebugBox({ ctx, width, height, zoomLevel }: CanvasInfo, loop: boolean) {
+function drawDebugBox({ ctx, width, height, zoom }: CanvasInfo, loop: boolean) {
   // prettier-ignore
   const lines = [
     `Width    ${width}`,
     `Height   ${height}`,
-    `Zoom     ${zoomLevel.toFixed(2)}`,
+    `Zoom     ${zoom.level.toFixed(2)}`,
     `Looping  ${loop}`,
   ]
 
