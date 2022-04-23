@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.3.2] - ????-??-??
+
+- Fix canvas clean up glitch.
 ## [0.3.1] - 2022-04-23
 
 - API for setting zoom boundaries.
