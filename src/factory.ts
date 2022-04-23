@@ -1,22 +1,30 @@
+import { fillCanvas } from './canvas'
 import drawDebugBox from './debugBox'
 import { checkDefined } from './preconditions'
 import type { CanvasInfo, DrawFunction } from './types'
 
-function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
-  let loop: boolean = false
-  let debugBoxVisible: boolean = false
+type InternalState = {
+  loop: boolean
+  debugBoxVisible: boolean
+}
 
-  const canvas =
+function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFunction: DrawFunction): CanvasInfo {
+  const state: InternalState = {
+    loop: false,
+    debugBoxVisible: false,
+  }
+
+  const canvasEl =
     typeof canvasElementOrId === 'string'
       ? (document.getElementById(canvasElementOrId) as HTMLCanvasElement)
       : canvasElementOrId
 
   const canvasContainer = checkDefined(
-    canvas.parentElement,
+    canvasEl.parentElement,
     'canvas (id=' + canvasElementOrId + ') must have parent element'
   )
 
-  const ctx = checkDefined(canvas.getContext('2d'), 'canvas context')
+  const ctx = checkDefined(canvasEl.getContext('2d'), 'canvas context')
 
   const adjustCanvas = (ci: CanvasInfo): CanvasInfo => {
     // Lookup the size the browser is displaying the canvas.
@@ -24,9 +32,9 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     const displayHeight = canvasContainer.clientHeight
 
     // Check if the canvas is not the same size and possibly adjust.
-    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-      canvas.width = displayWidth
-      canvas.height = displayHeight
+    if (canvasEl.width !== displayWidth || canvasEl.height !== displayHeight) {
+      canvasEl.width = displayWidth
+      canvasEl.height = displayHeight
       return {
         ...ci,
         width: displayWidth,
@@ -37,31 +45,40 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
   }
 
   function drawCanvas(ci: CanvasInfo) {
+    // prepare canvas
+    fillCanvas(ci, 'black')
+    ci.ctx.fillRect(0, 0, ci.canvas.width, ci.canvas.height)
+    ci.ctx.setTransform(1, 0, 0, 1, 1, 1)
+    ci.ctx.translate(ci.width / 2, ci.height / 2)
+    ci.ctx.scale(ci.zoomLevel, ci.zoomLevel)
+    ci.ctx.translate(-ci.width / 2, -ci.height / 2)
+
     drawFunction(ci)
-    if (debugBoxVisible) {
-      drawDebugBox(ci)
+    if (state.debugBoxVisible) {
+      ci.ctx.setTransform(1, 0, 0, 1, 0, 0)
+      drawDebugBox(ci, state.loop)
     }
   }
 
   let animationHandle: number
   function doLoop() {
     drawCanvas(ci)
-    if (loop) {
+    if (state.loop) {
       animationHandle = requestAnimationFrame(() => doLoop())
     }
   }
 
   function startLoop() {
-    if (loop) {
+    if (state.loop) {
       console.warn('Attempt to start the loop, but the loop is already running.')
     } else {
-      loop = true
+      state.loop = true
       doLoop()
     }
   }
 
   function stopLoop() {
-    if (!loop) {
+    if (!state.loop) {
       console.warn('Attempt to stop the loop, but no loop is not running.')
     }
     if (animationHandle == null) {
@@ -69,34 +86,58 @@ function initializeCanvas(canvasElementOrId: string | HTMLCanvasElement, drawFun
     } else {
       cancelAnimationFrame(animationHandle)
     }
-    loop = false
+    state.loop = false
+  }
+
+  function changeZoomLevel(delta: number) {
+    ci.zoomLevel += delta / 1000
+    ci.zoomLevel = Math.min(4, Math.max(1 / 5, ci.zoomLevel))
+    if (!state.loop) {
+      ci.redraw()
+    }
   }
 
   let ci: CanvasInfo = {
-    canvas,
+    canvas: canvasEl,
     ctx,
     width: 0,
     height: 0,
+    zoomLevel: 1,
     redraw: () => drawCanvas(ci),
     startLoop,
     stopLoop,
     destroy: () => {},
+
+    changeZoomLevel,
+
     showDebugBox: () => {
-      debugBoxVisible = true
+      state.debugBoxVisible = true
     },
     hideDebugBox: () => {
-      debugBoxVisible = false
+      state.debugBoxVisible = false
     },
   }
 
   ci = adjustCanvas(ci)
+
+  // set up resizing observer
   const resizeObserver = new ResizeObserver((_entries) => {
     ci = adjustCanvas(ci)
     drawCanvas(ci)
   })
   resizeObserver.observe(canvasContainer)
+
+  // setup mouse wheel listener
+  const wheelListener = (event: WheelEvent) => {
+    ci.changeZoomLevel(event.deltaY)
+    event.preventDefault()
+  }
+  canvasEl.addEventListener('wheel', wheelListener)
+
+  // clean up
   ci.destroy = () => {
     resizeObserver.unobserve(canvasContainer)
+    canvasEl.removeEventListener('wheel', wheelListener)
   }
 
   return ci

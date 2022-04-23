@@ -6,10 +6,13 @@ type CanvasInfo = {
   ctx: CanvasContext
   width: number
   height: number
+  zoomLevel: number
   redraw: () => void
   startLoop: () => void
   stopLoop: () => void
   destroy: () => void
+
+  changeZoomLevel: (delta: number) => void
 
   showDebugBox: () => void
   hideDebugBox: () => void

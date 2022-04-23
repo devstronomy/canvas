@@ -1,4 +1,4 @@
-import { CanvasInfo, fillCanvas, initializeCanvas } from 'Canvas/index'
+import { CanvasInfo, initializeCanvas } from 'Canvas/index'
 
 import { animationDemo } from './animationDemo'
 import { ellipseDemo } from './ellipseDemo'
@@ -12,7 +12,6 @@ enum Scene {
 let scene: Scene = Scene.StaticDemo
 
 function drawScene(ci: CanvasInfo): void {
-  fillCanvas(ci, 'black')
   switch (scene) {
     case Scene.StaticDemo:
       lineDemo(ci)

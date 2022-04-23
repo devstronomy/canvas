@@ -1,11 +1,19 @@
 import { stroke } from './canvas'
 import { CanvasInfo } from './types'
 
-function drawDebugBox({ ctx, width, height }: CanvasInfo) {
-  const nOfLines = 2
+function drawDebugBox({ ctx, width, height, zoomLevel }: CanvasInfo, loop: boolean) {
+  // prettier-ignore
+  const lines = [
+    `Width    ${width}`,
+    `Height   ${height}`,
+    `Zoom     ${zoomLevel.toFixed(2)}`,
+    `Looping  ${loop}`,
+  ]
+
+  const nOfLines = lines.length
   const fontSize = 12
-  const boxWidth = 100
-  const boxHeight = (nOfLines + 1) * fontSize
+  const boxWidth = 120
+  const boxHeight = (nOfLines + 1) * (fontSize + 2) - 6
   const boxX = width - boxWidth - 10
   const boxY = 10
 
@@ -27,8 +35,8 @@ function drawDebugBox({ ctx, width, height }: CanvasInfo) {
   const textLineX = boxX + 6
   ctx.fillStyle = '#0e0'
   ctx.font = `normal normal ${fontSize}px Monospace`
-  ctx.fillText(`Width  ${width}`, textLineX, textLineY(1), boxWidth - 12)
-  ctx.fillText(`Height ${height}`, textLineX, textLineY(2), boxWidth - 12)
+
+  lines.forEach((line, idx) => ctx.fillText(line, textLineX, textLineY(idx + 1), boxWidth - 12))
 
   ctx.restore()
 }
