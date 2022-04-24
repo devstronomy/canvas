@@ -2,8 +2,9 @@
 
 ## [0.3.2] - ????-??-??
 
+- Draw boundary box for the demo scenes. To better track the zoom level.
 - Track mouse position in the debug box.
-- Fix canvas clean up glitch.
+- Fix canvas clean-up glitch.
 
 ## [0.3.1] - 2022-04-23
 
