@@ -57,7 +57,7 @@ function initializeCanvas(
     // prepare canvas
     fillCanvas(ci, 'black')
     ci.ctx.setTransform(1, 0, 0, 1, 1, 1)
-    ci.ctx.fillRect(0, 0, ci.canvas.width, ci.canvas.height)
+    ci.ctx.fillRect(0, 0, ci.width, ci.height)
     ci.ctx.translate(ci.width / 2, ci.height / 2)
     ci.ctx.scale(ci.zoom.level, ci.zoom.level)
     ci.ctx.translate(-ci.width / 2, -ci.height / 2)
@@ -111,7 +111,6 @@ function initializeCanvas(
   }
 
   let ci: CanvasInfo = {
-    canvas: canvasEl,
     ctx,
     width: 0,
     height: 0,

@@ -13,11 +13,10 @@ let y1 = boundary
 let y1Delta = speed
 
 function animationDemo(ci: CanvasInfo) {
-  const { ctx, canvas } = ci
   if (x1 <= boundary) {
     x1Delta = speed
   }
-  if (x1 >= canvas.width - boundary) {
+  if (x1 >= ci.width - boundary) {
     x1Delta = -speed
   }
   x1 += x1Delta
@@ -25,7 +24,7 @@ function animationDemo(ci: CanvasInfo) {
   if (y1 <= boundary) {
     y1Delta = speed
   }
-  if (y1 >= canvas.height - boundary) {
+  if (y1 >= ci.height - boundary) {
     y1Delta = -speed
   }
   y1 += y1Delta
@@ -33,18 +32,18 @@ function animationDemo(ci: CanvasInfo) {
   boundaryBox(ci, boundary)
 
   // draw lines
-  line(ctx, {
+  line(ci.ctx, {
     x1,
     y1,
-    x2: canvas.width - x1,
-    y2: canvas.height - y1,
+    x2: ci.width - x1,
+    y2: ci.height - y1,
     color: 'red',
     width: 2,
   })
-  line(ctx, {
+  line(ci.ctx, {
     x1,
-    y1: canvas.height - y1,
-    x2: canvas.width - x1,
+    y1: ci.height - y1,
+    x2: ci.width - x1,
     y2: boundary,
     color: 'green',
     width: 3,

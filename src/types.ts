@@ -1,8 +1,6 @@
-type Canvas = HTMLCanvasElement
 type CanvasContext = CanvasRenderingContext2D
 
 type CanvasInfo = {
-  canvas: Canvas
   ctx: CanvasContext
 
   width: number
@@ -36,4 +34,4 @@ type Color = Readonly<{
   b: string
 }>
 
-export type { Canvas, CanvasContext, CanvasInfo, Color, DrawFunction }
+export type { CanvasContext, CanvasInfo, Color, DrawFunction }

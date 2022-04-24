@@ -20,9 +20,9 @@ function fill(ctx: CanvasContext, color: string): void {
   ctx.fill()
 }
 
-function fillCanvas({ ctx, canvas }: CanvasInfo, color: string): void {
-  ctx.fillStyle = color
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
+function fillCanvas(ci: CanvasInfo, color: string): void {
+  ci.ctx.fillStyle = color
+  ci.ctx.fillRect(0, 0, ci.width, ci.height)
 }
 
 function fillRGB(ctx: CanvasContext, r: string, g: string, b: string): void {
