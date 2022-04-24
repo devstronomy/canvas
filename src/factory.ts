@@ -98,12 +98,16 @@ function initializeCanvas(
     state.loop = false
   }
 
-  function changeZoomLevel(delta: number) {
-    ci.zoom.level += delta / 1000
-    ci.zoom.level = Math.min(ci.zoom.max, Math.max(ci.zoom.min, ci.zoom.level))
+  function ensureRedraw() {
     if (!state.loop) {
       ci.redraw()
     }
+  }
+
+  function changeZoomLevel(delta: number) {
+    ci.zoom.level += delta / 1000
+    ci.zoom.level = Math.min(ci.zoom.max, Math.max(ci.zoom.min, ci.zoom.level))
+    ensureRedraw()
   }
 
   let ci: CanvasInfo = {
@@ -148,10 +152,19 @@ function initializeCanvas(
   }
   canvasEl.addEventListener('wheel', wheelListener)
 
+  // setup mouse listener
+  const mouseMoveListener = (event: MouseEvent) => {
+    ci.mouseX = event.offsetX
+    ci.mouseY = event.offsetY
+    ensureRedraw()
+  }
+  canvasEl.addEventListener('mousemove', mouseMoveListener)
+
   // clean up
   ci.destroy = () => {
     resizeObserver.unobserve(canvasContainer)
     canvasEl.removeEventListener('wheel', wheelListener)
+    canvasEl.removeEventListener('mousemove', mouseMoveListener)
   }
 
   return ci

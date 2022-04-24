@@ -4,8 +4,12 @@ type CanvasContext = CanvasRenderingContext2D
 type CanvasInfo = {
   canvas: Canvas
   ctx: CanvasContext
+
   width: number
   height: number
+
+  mouseX?: number
+  mouseY?: number
 
   zoom: {
     level: number

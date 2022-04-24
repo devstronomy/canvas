@@ -1,11 +1,16 @@
 import { stroke } from './canvas'
 import { CanvasInfo } from './types'
 
-function drawDebugBox({ ctx, width, height, zoom }: CanvasInfo, loop: boolean) {
+function drawDebugBox({ ctx, width, height, zoom, mouseX, mouseY }: CanvasInfo, loop: boolean) {
   // prettier-ignore
+  const separator = ''
   const lines = [
     `Width    ${width}`,
     `Height   ${height}`,
+    separator,
+    `Mouse X  ${mouseX ?? '?'}`,
+    `Mouse Y  ${mouseY ?? '?'}`,
+    separator,
     `Zoom     ${zoom.level.toFixed(2)}`,
     `Looping  ${loop}`,
   ]
