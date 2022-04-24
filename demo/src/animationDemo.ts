@@ -1,6 +1,8 @@
 import { line } from 'Canvas/line'
 import { CanvasInfo } from 'Canvas/types'
 
+import boundaryBox from './boundaryBox'
+
 const speed = 2
 const boundary = 10
 
@@ -10,7 +12,8 @@ let x1Delta = speed
 let y1 = boundary
 let y1Delta = speed
 
-function animationDemo({ ctx, canvas }: CanvasInfo) {
+function animationDemo(ci: CanvasInfo) {
+  const { ctx, canvas } = ci
   if (x1 <= boundary) {
     x1Delta = speed
   }
@@ -27,6 +30,9 @@ function animationDemo({ ctx, canvas }: CanvasInfo) {
   }
   y1 += y1Delta
 
+  boundaryBox(ci, boundary)
+
+  // draw lines
   line(ctx, {
     x1,
     y1,
