@@ -1,7 +1,8 @@
 # Changelog
 
-## [0.3.2] - ????-??-??
+## [0.4.0] - ????-??-??
 
+- Remove `CanvasInfo#canvas`. Use `width` and `height` from `CanvasInfo` instead.
 - Draw boundary box for the demo scenes. To better track the zoom level.
 - Track mouse position in the debug box.
 - Fix canvas clean-up glitch.
