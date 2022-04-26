@@ -12,6 +12,7 @@
     "clean:dist": "run-s clean dist",
     "demo": "npm run -C demo start",
     "dist": "tsc",
+    "start": "npm run demo",
     "test": "jest",
     "prettier": "prettier -c src && prettier-package-json -l ./package.json",
     "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"
