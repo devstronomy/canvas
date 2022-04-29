@@ -14,6 +14,7 @@ type CanvasInfo = {
     min: number
     max: number
   }
+  scale: (n: number) => number
 
   redraw: () => void
   startLoop: () => void
