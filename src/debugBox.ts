@@ -1,17 +1,20 @@
 import { stroke } from './canvas'
 import { CanvasInfo } from './types'
 
-function drawDebugBox({ ctx, width, height, zoom, mouseX, mouseY }: CanvasInfo, loop: boolean) {
+function drawDebugBox(ci: CanvasInfo, loop: boolean) {
+  const { ctx } = ci
   // prettier-ignore
   const separator = ''
   const lines = [
-    `Width    ${width}`,
-    `Height   ${height}`,
+    `Width    ${ci.width}`,
+    `Height   ${ci.height}`,
+    `Scaled W ${ci.scale(ci.width).toFixed(0)}`,
+    `Scaled H ${ci.scale(ci.height).toFixed(0)}`,
     separator,
-    `Mouse X  ${mouseX ?? '?'}`,
-    `Mouse Y  ${mouseY ?? '?'}`,
+    `Mouse X  ${ci.mouseX ?? '?'}`,
+    `Mouse Y  ${ci.mouseY ?? '?'}`,
     separator,
-    `Zoom     ${zoom.level.toFixed(2)}`,
+    `Zoom     ${ci.zoom.level.toFixed(2)}`,
     `Looping  ${loop}`,
   ]
 
@@ -19,7 +22,7 @@ function drawDebugBox({ ctx, width, height, zoom, mouseX, mouseY }: CanvasInfo, 
   const fontSize = 12
   const boxWidth = 120
   const boxHeight = (nOfLines + 1) * (fontSize + 2) - 6
-  const boxX = width - boxWidth - 10
+  const boxX = ci.width - boxWidth - 10
   const boxY = 10
 
   ctx.save()

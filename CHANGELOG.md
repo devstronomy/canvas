@@ -2,6 +2,10 @@
 
 ## [0.4.0] - ????-??-??
 
+- Added scaling demo scene.
+- Added `CanvasInfo#scale`.
+- Added scaled dimension into the debug box.
+- Support for the `fillColor` for ellipse (and thus circle).
 - Remove `CanvasInfo#canvas`. Use `width` and `height` from `CanvasInfo` instead.
 - Draw boundary box for the demo scenes. To better track the zoom level.
 - Track mouse position in the debug box.

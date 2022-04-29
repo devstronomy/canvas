@@ -120,6 +120,7 @@ function initializeCanvas(
       min: options?.zoomMin ?? 0.2,
       max: options?.zoomMax ?? 4,
     },
+    scale: (n: number) => n / ci.zoom.level,
     changeZoomLevel,
 
     redraw: () => drawCanvas(ci),
