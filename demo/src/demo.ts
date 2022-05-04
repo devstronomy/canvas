@@ -3,54 +3,47 @@ import { CanvasInfo, initializeCanvas } from 'Canvas/index'
 import { animationDemo, scalingDemo, staticDemo } from './scene'
 
 enum Scene {
-  StaticDemo,
-  AnimationDemo,
-  ScaleDemo,
+  Static,
+  Animation,
+  Scaling,
 }
 
-let scene: Scene = Scene.StaticDemo // default scene
+type ElementId = Readonly<'static-demo' | 'animation-demo' | 'scaling-demo'>
+
+type SceneInfo = Readonly<{
+  scene: Scene
+  callback: (ci: CanvasInfo) => void
+  isAnimation: boolean
+}>
+
+const sceneInfoMap: Record<ElementId, SceneInfo> = {
+  'static-demo': { scene: Scene.Static, callback: staticDemo, isAnimation: false },
+  'animation-demo': { scene: Scene.Animation, callback: animationDemo, isAnimation: true },
+  'scaling-demo': { scene: Scene.Scaling, callback: scalingDemo, isAnimation: false },
+}
+
+let currentScene: SceneInfo = sceneInfoMap['static-demo'] // default/initial scene
 
 function drawScene(ci: CanvasInfo): void {
-  switch (scene) {
-    case Scene.StaticDemo:
-      staticDemo(ci)
-      break
-    case Scene.AnimationDemo:
-      animationDemo(ci)
-      break
-    case Scene.ScaleDemo:
-      scalingDemo(ci)
-      break
-    default:
-      console.error('Unknown demo')
-  }
+  currentScene.callback(ci)
 }
 
 function demo() {
   const ci = initializeCanvas('canvas', drawScene)
   ci.showDebugBox()
 
-  function onSceneElementClick(elemendId: string, newScene: Scene, callback: () => void) {
-    document.getElementById(elemendId)?.addEventListener('click', () => {
-      if (scene !== newScene) {
-        scene = newScene
-        callback()
+  Object.entries(sceneInfoMap).forEach(([elementId, newScene]) => {
+    document.getElementById(elementId)?.addEventListener('click', () => {
+      if (currentScene.scene !== newScene.scene) {
+        currentScene = newScene
+        if (currentScene.isAnimation) {
+          ci.startLoop()
+        } else {
+          ci.stopLoop()
+          ci.redraw()
+        }
       }
     })
-  }
-
-  onSceneElementClick('static-demo', Scene.StaticDemo, () => {
-    ci.stopLoop()
-    ci.redraw()
-  })
-
-  onSceneElementClick('animation-demo', Scene.AnimationDemo, () => {
-    ci.startLoop()
-  })
-
-  onSceneElementClick('scale-demo', Scene.ScaleDemo, () => {
-    ci.stopLoop()
-    ci.redraw()
   })
 }
 

@@ -6,13 +6,13 @@ import boundaryBox from '../boundaryBox'
 
 const boundary = 10
 
-function staticDemo(ci: CanvasInfo) {
+function staticDemo(ci: CanvasInfo): void {
   boundaryBox(ci, boundary)
   lineDemo(ci)
   ellipseDemo(ci)
 }
 
-function lineDemo(ci: CanvasInfo) {
+function lineDemo(ci: CanvasInfo): void {
   boundaryBox(ci, boundary)
 
   // draw lines
@@ -34,7 +34,7 @@ function lineDemo(ci: CanvasInfo) {
   })
 }
 
-function ellipseDemo(ci: CanvasInfo) {
+function ellipseDemo(ci: CanvasInfo): void {
   for (let r = 1; r < 5; r++) {
     ellipse(ci.ctx, {
       x: ci.width / 2,
