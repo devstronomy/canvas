@@ -1,7 +1,7 @@
 import { line } from 'Canvas/line'
 import { CanvasInfo } from 'Canvas/types'
 
-import boundaryBox from './boundaryBox'
+import boundaryBox from '../boundaryBox'
 
 const speed = 2
 const boundary = 10

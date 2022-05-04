@@ -1,9 +1,6 @@
 import { CanvasInfo, initializeCanvas } from 'Canvas/index'
 
-import { animationDemo } from './animationDemo'
-import { ellipseDemo } from './ellipseDemo'
-import { lineDemo } from './lineDemo'
-import { scalingDemo } from './scalingDemo'
+import { animationDemo, scalingDemo, staticDemo } from './scene'
 
 enum Scene {
   StaticDemo,
@@ -16,8 +13,7 @@ let scene: Scene = Scene.StaticDemo // default scene
 function drawScene(ci: CanvasInfo): void {
   switch (scene) {
     case Scene.StaticDemo:
-      lineDemo(ci)
-      ellipseDemo(ci)
+      staticDemo(ci)
       break
     case Scene.AnimationDemo:
       animationDemo(ci)
