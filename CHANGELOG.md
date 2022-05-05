@@ -2,6 +2,7 @@
 
 ## [0.4.0] - ????-??-??
 
+- Added grid demo scene.
 - Added scaling demo scene.
 - Added `CanvasInfo#scale`.
 - Added scaled dimension into the debug box.
