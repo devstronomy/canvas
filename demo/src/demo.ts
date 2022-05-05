@@ -1,14 +1,15 @@
 import { CanvasInfo, initializeCanvas } from 'Canvas/index'
 
-import { animationDemo, scalingDemo, staticDemo } from './scene'
+import { animationDemo, gridDemo, scalingDemo, staticDemo } from './scene'
 
 enum Scene {
   Static,
   Animation,
   Scaling,
+  Grid,
 }
 
-type ElementId = Readonly<'static-demo' | 'animation-demo' | 'scaling-demo'>
+type ElementId = Readonly<'static-demo' | 'animation-demo' | 'scaling-demo' | 'grid-demo'>
 
 type SceneInfo = Readonly<{
   scene: Scene
@@ -20,6 +21,7 @@ const sceneInfoMap: Record<ElementId, SceneInfo> = {
   'static-demo': { scene: Scene.Static, callback: staticDemo, isAnimation: false },
   'animation-demo': { scene: Scene.Animation, callback: animationDemo, isAnimation: true },
   'scaling-demo': { scene: Scene.Scaling, callback: scalingDemo, isAnimation: false },
+  'grid-demo': { scene: Scene.Grid, callback: gridDemo, isAnimation: false },
 }
 
 let currentScene: SceneInfo = sceneInfoMap['static-demo'] // default/initial scene

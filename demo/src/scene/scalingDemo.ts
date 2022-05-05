@@ -1,7 +1,7 @@
 import { circle, ellipse, line } from 'Canvas/index'
 import { CanvasInfo } from 'Canvas/types'
 
-const hsl = (hue: number) => `hsl(${hue}, 60%, 63%)`
+import { hsl } from '../tools'
 
 function scalingDemo(ci: CanvasInfo) {
   const width = ci.width
