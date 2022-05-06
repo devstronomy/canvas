@@ -12,6 +12,7 @@
     "clean:dist": "run-s clean dist",
     "demo": "npm run -C demo start",
     "dist": "tsc",
+    "prepack": "npm run clean:dist",
     "start": "npm run demo",
     "test": "jest",
     "prettier:check": "run-s -cl prettier:check:*",
