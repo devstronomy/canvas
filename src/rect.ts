@@ -12,7 +12,10 @@ type Rectangle = {
   dashGap?: number
 }
 
-function rect(ctx: CanvasContext, { x, y, w, h, lineWidth, dashed, color, dashGap = 5 }: Rectangle): void {
+function rect(
+  ctx: CanvasContext,
+  { x, y, w, h, lineWidth, dashed, color, dashGap = 5 }: Rectangle
+): void {
   ctx.save()
   ctx.beginPath()
   if (dashed) {

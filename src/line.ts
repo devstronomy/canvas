@@ -12,7 +12,10 @@ type Line = {
   dashGap?: number
 }
 
-function line(ctx: CanvasContext, { x1, y1, x2, y2, width, dashed, color, dashGap = 5 }: Line): void {
+function line(
+  ctx: CanvasContext,
+  { x1, y1, x2, y2, width, dashed, color, dashGap = 5 }: Line
+): void {
   ctx.save()
   ctx.beginPath()
   if (dashed) {

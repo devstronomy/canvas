@@ -5,12 +5,10 @@
   "license": "MIT",
   "author": "",
   "scripts": {
-    "start": "webpack serve",
-    "test": "jest",
-    "prettier": "prettier -c src && prettier-package-json -l ./package.json",
-    "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"
+    "start": "webpack serve"
   },
   "devDependencies": {
+    "@devstronomy/dev-dependencies": "0.2.0",
     "html-webpack-plugin": "5.5.0",
     "ts-node": "10.7.0"
   },
@@ -18,8 +16,5 @@
   "engines": {
     "node": "16.14.2",
     "npm": "8.5.0"
-  },
-  "dependencies": {
-    "@devstronomy/dev-dependencies": "0.2.0"
   }
 }

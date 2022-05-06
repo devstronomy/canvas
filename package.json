@@ -14,16 +14,19 @@
     "dist": "tsc",
     "start": "npm run demo",
     "test": "jest",
-    "prettier": "prettier -c src && prettier-package-json -l ./package.json",
-    "prettier:fix": "prettier -w src && prettier-package-json --write ./package.json"
+    "prettier:check": "run-s -cl prettier:check:*",
+    "prettier:check:demo": "prettier -c demo && prettier-package-json -l ./demo/package.json",
+    "prettier:check:src": "prettier -c src && prettier-package-json -l ./package.json",
+    "prettier:fix": "run-s -cl prettier:fix:*",
+    "prettier:fix:demo": "prettier -w demo && prettier-package-json --write ./demo/package.json",
+    "prettier:fix:src": "prettier -w src && prettier-package-json --write ./package.json"
   },
   "types": "./dist/index.d.ts",
   "devDependencies": {
     "@devstronomy/dev-dependencies": "0.2.0",
     "css-loader": "6.7.1",
     "html-webpack-plugin": "5.5.0",
-    "mini-css-extract-plugin": "2.6.0",
-    "rimraf": "3.0.2"
+    "mini-css-extract-plugin": "2.6.0"
   },
   "keywords": [],
   "engines": {
