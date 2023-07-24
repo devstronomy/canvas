@@ -1,9 +1,12 @@
 {
   "name": "@devstronomy/canvas",
-  "version": "0.4.0-alpha.2",
+  "version": "0.5.0",
   "description": "Canvas Drawing Library",
   "license": "MIT",
   "author": "Martin Krauskopf <martin.krauskopf@gmail.com> (https://devstronomy.com/)",
+  "exports": {
+    ".": "./dist"
+  },
   "files": [
     "dist"
   ],
@@ -13,28 +16,28 @@
     "demo": "npm run -C demo start",
     "dist": "tsc",
     "prepack": "npm run clean:dist",
-    "start": "npm run demo",
-    "test": "jest",
     "prettier:check": "run-s -cl prettier:check:*",
     "prettier:check:demo": "prettier -c demo && prettier-package-json -l ./demo/package.json",
     "prettier:check:src": "prettier -c src && prettier-package-json -l ./package.json",
     "prettier:fix": "run-s -cl prettier:fix:*",
     "prettier:fix:demo": "prettier -w demo && prettier-package-json --write ./demo/package.json",
-    "prettier:fix:src": "prettier -w src && prettier-package-json --write ./package.json"
+    "prettier:fix:src": "prettier -w src && prettier-package-json --write ./package.json",
+    "publish:dry": "npm publish --access public --dry-run",
+    "publish:npm": "npm publish --access public",
+    "start": "npm run demo",
+    "test": "jest"
   },
   "types": "./dist/index.d.ts",
   "devDependencies": {
-    "@devstronomy/dev-dependencies": "0.2.0",
-    "css-loader": "6.7.1",
-    "html-webpack-plugin": "5.5.0",
-    "mini-css-extract-plugin": "2.6.0"
+    "@devstronomy/dev-dependencies": "0.4.0",
+    "css-loader": "6.8.1",
+    "html-webpack-plugin": "5.5.3",
+    "jest-environment-jsdom": "29.6.1",
+    "mini-css-extract-plugin": "2.7.6"
   },
   "keywords": [],
   "engines": {
-    "node": ">=16",
-    "npm": ">=8"
-  },
-  "exports": {
-    ".": "./dist"
+    "node": "^18",
+    "npm": "^9"
   }
 }

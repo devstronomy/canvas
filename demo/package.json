@@ -8,13 +8,13 @@
     "start": "webpack serve"
   },
   "devDependencies": {
-    "@devstronomy/dev-dependencies": "0.2.0",
-    "html-webpack-plugin": "5.5.0",
-    "ts-node": "10.7.0"
+    "@devstronomy/dev-dependencies": "0.4.0",
+    "html-webpack-plugin": "5.5.3",
+    "ts-node": "10.9.1"
   },
   "keywords": [],
   "engines": {
-    "node": "16.14.2",
-    "npm": "8.5.0"
+    "node": "^18",
+    "npm": "^9"
   }
 }
